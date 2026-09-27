@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Course {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Um curso pode estar associado a varios modulos, atraves da tabela intermediaria
+  modules   CoursesModules[]
+
+  @@map("courses")
+}
+
+model Module {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Um modulo pode pertencer a varios cursos, atraves da tabela intermediaria
+  courses   CoursesModules[]
+
+  @@map("modules")
+}
+
+// Tabela intermediaria explicita do relacionamento N:N entre Course e Module.
+// Usar um modelo explicito (em vez do N:N implicito do Prisma) permite
+// consultar, filtrar e remover a ligacao diretamente, o que o exercicio pede.
+model CoursesModules {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+
+  module    Module   @relation(fields: [moduleId], references: [id])
+  moduleId  Int
+
+  // Evita duplicar a mesma associacao curso-modulo
+  @@unique([courseId, moduleId])
+  @@map("courses_modules")
+}

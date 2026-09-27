@@ -1,0 +1,24 @@
+{
+  "name": "courses-modules-nn",
+  "version": "1.0.0",
+  "description": "Relacionamento N:N entre Courses e Modules usando Prisma ORM, com tabela intermediaria CoursesModules",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "create": "node src/create.js",
+    "query": "node src/query.js",
+    "deleteLink": "node src/deleteLink.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "keywords": ["prisma", "sqlite", "orm", "nodejs", "many-to-many"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.20.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0"
+  }
+}
